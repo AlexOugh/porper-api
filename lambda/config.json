@@ -1,0 +1,18 @@
+{
+  "mysql": {
+    "host": "porper.crht7yd5fqrx.us-east-1.rds.amazonaws.com",
+    "username": "porper",
+    "password": "Porper01",
+    "database": "porper",
+    "port": 3306
+  },
+  "google": {
+    "tokeninfo_endpoint": "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token="
+  },
+  "github": {
+    "auth_endpoint": "https://github.com/login/oauth",
+    "api_endpoint": "https://api.github.com",
+    "client_id": "ef12bb571b929ddb5b3a",
+    "client_secret": "54dfb5c2994a86d8a02067a8d762d0c204cc8353"
+  }
+}

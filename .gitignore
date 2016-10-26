@@ -1,0 +1,13 @@
+node_modules
+dist
+__*
+*.zip
+.DS_Store
+*.pyc
+!__init__.py
+pymysql
+porper
+requests
+*.dist-info
+.env
+default.js
