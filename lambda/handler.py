@@ -42,10 +42,10 @@ def handler(event, context):
             print ret
             if not ret:
                 return send_failure_response({'error': 'unauthorized'}, 401)
-            ret_json = JSON.loads(ret)
-            if not ret_json.get('access_token'):
+            if not ret.get('access_token'):
                 return send_failure_response({'error': 'unauthorized'}, 401)
             else:
+                connection.commit()
                 return send_success_response(ret)
 
         # validate the given access_token, first

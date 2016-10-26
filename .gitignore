@@ -11,3 +11,4 @@ requests
 *.dist-info
 .env
 default.js
+config.json
