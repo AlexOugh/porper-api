@@ -183,16 +183,6 @@ data:
 ```
 
 
-## How to manage permissions
-
-### To gran permissions
-```
-```
-
-### To revoke permissions
-```
-```
-
 ## Sungard Availability Services | Labs
 [![Sungard Availability Services | Labs][labs-image]][labs-github-url]
 
