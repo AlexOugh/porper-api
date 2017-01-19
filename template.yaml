@@ -18,12 +18,15 @@ Parameters:
     Description: MYSQL Database Name
   Google_Tokeninfo_Endpoint:
     Type: String
+    Default: "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token="
     Description: Endpoint to Check Google Auth Token
   Github_Auth_Endpoint:
     Type: String
+    Default: "https://github.com/login/oauth"
     Description: Endpoint to Check Github Auth Token
   Github_API_Endpoint:
     Type: String
+    Default: "https://api.github.com"
     Description: Endpoint for Github API
   Github_Client_Id:
     Type: String
