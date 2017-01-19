@@ -1,0 +1,119 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: API Gateway and Lambda function for account federation using IAM roles.
+
+Parameters:
+  MYSQL_Host:
+    Type: String
+    Description: MYSQL Host Name
+  MYSQL_User:
+    Type: String
+    Description: MYSQL User Name
+  MYSQL_Password:
+    Type: String
+    NoEcho: true
+    Description: MYSQL Password
+  MYSQL_Database:
+    Type: String
+    Description: MYSQL Database Name
+  Google_Tokeninfo_Endpoint:
+    Type: String
+    Description: Endpoint to Check Google Auth Token
+  Github_Auth_Endpoint:
+    Type: String
+    Description: Endpoint to Check Github Auth Token
+  Github_API_Endpoint:
+    Type: String
+    Description: Endpoint for Github API
+  Github_Client_Id:
+    Type: String
+    Description: Client Id for Github Auth
+  Github_Secret:
+    Type: String
+    NoEcho: true
+    Description: Secret for Github Auth
+
+Resources:
+  LambdaFunctionIAMRole:
+      Type: "AWS::IAM::Role"
+      Properties:
+          Path: "/"
+          AssumeRolePolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              -
+                Sid: "AllowLambdaServiceToAssumeRole"
+                Effect: "Allow"
+                Action:
+                  - "sts:AssumeRole"
+                Principal:
+                  Service:
+                    - "lambda.amazonaws.com"
+          Policies:
+            -
+              PolicyName: "InlinePolicy"
+              PolicyDocument:
+                Version: "2012-10-17"
+                Statement:
+                  -
+                    Effect: "Allow"
+                    Action:
+                      - "sts:*"
+                    Resource: "*"
+                  -
+                    Effect: "Allow"
+                    Action:
+                      - "logs:CreateLogGroup"
+                      - "logs:CreateLogStream"
+                      - "logs:PutLogEvents"
+                    Resource: "arn:aws:logs:*:*:*"
+
+  ApiGatewayApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      DefinitionUri: ./swagger.yaml
+      StageName: Prod
+      Variables:
+        LambdaFunctionName: !Ref LambdaFunction
+
+  LambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: handler.handler
+      Runtime: python2.7
+      CodeUri: ./src
+      Role: !GetAtt LambdaFunctionIAMRole.Arn
+      Timeout: 60
+      Environment:
+        Variables:
+          MYSQL_HOST: !Ref MYSQL_Host
+          MYSQL_USER: !Ref MYSQL_User
+          MYSQL_PASSWORD: !Ref MYSQL_Password
+          MYSQL_DATABASE: !Ref MYSQL_Database
+          GOOGLE_TOKENINFO_ENDPOINT: !Ref Google_Tokeninfo_Endpoint
+          GITHUB_AUTH_ENDPOINT: !Ref Github_Auth_Endpoint
+          GITHUB_API_ENDPOINT: !Ref Github_API_Endpoint
+          GITHUB_CLIENT_ID: !Ref Github_Client_Id
+          GITHUB_CLIENT_SECRET: !Ref Github_Secret
+      Events:
+        ProxyApiGreedy:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: /porper
+            Method: GET
+
+Outputs:
+  ApiUrl:
+    Description: URL of your API endpoint
+    Value: !Join
+      - ''
+      - - https://
+        - !Ref ApiGatewayApi
+        - '.execute-api.'
+        - !Ref 'AWS::Region'
+        - '.amazonaws.com/Prod'
+
+  LambdaFunction:
+    Description: "Lambda Function ARN"
+    Value: !GetAtt LambdaFunction.Arn
