@@ -37,6 +37,39 @@ Parameters:
     Description: Secret for Github Auth
 
 Resources:
+  EncryptionDecryptionKey:
+    Type: AWS::KMS::Key
+    Properties:
+      Description: "Encryption and Decryption key for Lambda Function Environment Variables"
+      KeyPolicy:
+        Id: "LambdaEncDec"
+        Version: "2012-10-17"
+        Statement:
+          -
+            Sid: "Allow administration of the key"
+            Effect: "Allow"
+            Action:
+              - "kms:*"
+            Principal:
+              AWS: !Ref AWS::AccountId
+            Resource: '*'
+          -
+            Sid: "Allow Encryption Service to use this key"
+            Effect: "Allow"
+            Action:
+              - "kms:Encrypt"
+            Principal:
+              AWS: !GetAtt LambdaFunctionIAMRole.Arn
+            Resource: '*'
+          -
+            Sid: "Allow Decryption Service to use this key"
+            Effect: "Allow"
+            Action:
+              - "kms:Decrypt"
+            Principal:
+              AWS: !GetAtt LambdaFunctionIAMRole.Arn
+            Resource: '*'
+
   LambdaFunctionIAMRole:
       Type: "AWS::IAM::Role"
       Properties:
@@ -116,7 +149,12 @@ Outputs:
         - '.execute-api.'
         - !Ref 'AWS::Region'
         - '.amazonaws.com/Prod'
-
   LambdaFunction:
     Description: "Lambda Function ARN"
     Value: !GetAtt LambdaFunction.Arn
+  KMSKeyId:
+    Description: "KMS Key Id"
+    Value: !Ref EncryptionDecryptionKey
+  KMSKeyArn:
+    Description: "KMS Key Id"
+    Value: !GetAtt EncryptionDecryptionKey.Arn

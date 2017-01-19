@@ -6,6 +6,8 @@ Overview
 
 This is an API interface to support Porper implemented by AWS Lambda and API Gateway.
 
+![porper][porper-image]
+
 ## Database Initialization
 
 After creating a database, populate initial data using 'porper_initial.sql' in [porper-core][porper-core-url] repository
@@ -15,7 +17,7 @@ $ mysql -h <db_host> -u <db_user> -p <db_name> < porper_initial.sql
 
 ## How to use Google+ and Github Authentication
 
-If you plan to use Google+ and/or GitHub authentications, set related values either as an environment variables or in a config.json. (Please see next section, 'How to provide related info')
+If you plan to use Google+ and/or GitHub authentications, set related values as environment variables of Lambda Function. (Please see next section, 'Environment Variables')
 
 Please see these 2 sites to find out how to setup OpenID connect
 
@@ -23,27 +25,20 @@ Google+ : https://developers.google.com/identity/protocols/OpenIDConnect
 
 GitHut : https://developer.github.com/v3/oauth/
 
-## Configuration
+## Environment Variables
 
-Fill up the configuration file, '/lambda/config.json', with the database & OpenID information
+These are environment variables for the Lambda Function.
 ```
 {
-  "mysql": {
-    "host": "<db_host>",
-    "username": "<db_user>",
-    "password": "<db_password>",
-    "database": "<db_name>",
-    "port": 3306
-  },
-  "google": {
-    "tokeninfo_endpoint": "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token="
-  },
-  "github": {
-    "auth_endpoint": "https://github.com/login/oauth",
-    "api_endpoint": "https://api.github.com",
-    "client_id": "<client_id>",
-    "client_secret": "<secret_id>"
-  }
+  "MYSQL_Host": "<db_host>",
+  "MYSQL_User": "<db_user>",
+  "MYSQL_Password": "<db_password>",
+  "MYSQL_Database": "<db_name>",
+  "Google_Tokeninfo_Endpoint": "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=",
+  "Github_Auth_Endpoint": "https://github.com/login/oauth",
+  "Github_API_Endpoint": "https://api.github.com",
+  "Github_Client_Id": "<client_id>",
+  "Github_Secret": "<secret_id>"
 }
 ```
 
@@ -193,6 +188,7 @@ GitHub: [https://sungardas.github.io][sungardas-github-url]
 
 Blog: [http://blog.sungardas.com/CTOLabs/][sungardaslabs-blog-url]
 
+[porper-image]: https://github.com/SungardAS/porper-core/blob/develop/docs/images/logo.png?raw=true
 [porper-core-url]: https://github.com/SungardAS/porper-core
 [labs-github-url]: https://sungardas.github.io
 [labs-image]: https://raw.githubusercontent.com/SungardAS/repo-assets/master/images/logos/sungardas-labs-logo-small.png
