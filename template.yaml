@@ -3,35 +3,35 @@ Transform: AWS::Serverless-2016-10-31
 Description: API Gateway and Lambda function for account federation using IAM roles.
 
 Parameters:
-  MYSQL_Host:
+  MYSQLHost:
     Type: String
     Description: MYSQL Host Name
-  MYSQL_User:
+  MYSQLUser:
     Type: String
     Description: MYSQL User Name
-  MYSQL_Password:
+  MYSQLPassword:
     Type: String
     NoEcho: true
     Description: MYSQL Password
-  MYSQL_Database:
+  MYSQLDatabase:
     Type: String
     Description: MYSQL Database Name
-  Google_Tokeninfo_Endpoint:
+  GoogleTokeninfoEndpoint:
     Type: String
     Default: "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token="
     Description: Endpoint to Check Google Auth Token
-  Github_Auth_Endpoint:
+  GithubAuthEndpoint:
     Type: String
     Default: "https://github.com/login/oauth"
     Description: Endpoint to Check Github Auth Token
-  Github_API_Endpoint:
+  GithubAPIEndpoint:
     Type: String
     Default: "https://api.github.com"
     Description: Endpoint for Github API
-  Github_Client_Id:
+  GithubClientId:
     Type: String
     Description: Client Id for Github Auth
-  Github_Secret:
+  GithubSecret:
     Type: String
     NoEcho: true
     Description: Secret for Github Auth
@@ -89,15 +89,15 @@ Resources:
       Timeout: 60
       Environment:
         Variables:
-          MYSQL_HOST: !Ref MYSQL_Host
-          MYSQL_USER: !Ref MYSQL_User
-          MYSQL_PASSWORD: !Ref MYSQL_Password
-          MYSQL_DATABASE: !Ref MYSQL_Database
-          GOOGLE_TOKENINFO_ENDPOINT: !Ref Google_Tokeninfo_Endpoint
-          GITHUB_AUTH_ENDPOINT: !Ref Github_Auth_Endpoint
-          GITHUB_API_ENDPOINT: !Ref Github_API_Endpoint
-          GITHUB_CLIENT_ID: !Ref Github_Client_Id
-          GITHUB_CLIENT_SECRET: !Ref Github_Secret
+          MYSQL_HOST: !Ref MYSQLHost
+          MYSQL_USER: !Ref MYSQLUser
+          MYSQL_PASSWORD: !Ref MYSQLPassword
+          MYSQL_DATABASE: !Ref MYSQLDatabase
+          GOOGLE_TOKENINFO_ENDPOINT: !Ref GoogleTokeninfoEndpoint
+          GITHUB_AUTH_ENDPOINT: !Ref GithubAuthEndpoint
+          GITHUB_API_ENDPOINT: !Ref GithubAPIEndpoint
+          GITHUB_CLIENT_ID: !Ref GithubClientId
+          GITHUB_CLIENT_SECRET: !Ref GithubSecret
       Events:
         ProxyApiGreedy:
           Type: Api
