@@ -2,7 +2,7 @@
 swagger: "2.0"
 info:
   version: "2016-10-26T21:20:53Z"
-  title: "Porper-API"
+  title: "Porper API Interfaces"
 schemes:
 - "https"
 paths:
