@@ -131,6 +131,7 @@ Resources:
           GITHUB_API_ENDPOINT: !Ref GithubAPIEndpoint
           GITHUB_CLIENT_ID: !Ref GithubClientId
           GITHUB_CLIENT_SECRET: !Ref GithubSecret
+          KMS_KEY_ID: !Ref EncryptionDecryptionKey
       Events:
         ProxyApiGreedy:
           Type: Api
@@ -155,6 +156,3 @@ Outputs:
   KMSKeyId:
     Description: "KMS Key Id"
     Value: !Ref EncryptionDecryptionKey
-  KMSKeyArn:
-    Description: "KMS Key Id"
-    Value: !GetAtt EncryptionDecryptionKey.Arn
